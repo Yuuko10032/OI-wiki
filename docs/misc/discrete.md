@@ -1,4 +1,4 @@
-author: GavinZhengOI
+author: GavinZhengOI, Yuuko10032
 
 ## 简介
 
@@ -39,4 +39,23 @@ std::sort(a.begin(), a.end());
 a.erase(std::unique(a.begin(), a.end()), a.end());
 for (int i = 0; i < n; ++i)
   b[i] = std::lower_bound(a.begin(), a.end(), b[i]) - a.begin();
+```
+
+### 二维离散化
+
+当数据范围较大时，需要将点的坐标进行离散化。下面是一道例题：
+
+???+note " 例题 [[USACO16FEB]Load Balancing S](https://www.luogu.com.cn/problem/P3138)"
+    在平面上有 $n(1 \le n \le 1000)$ 个点，坐标为 $(x_i, y_i)(1 \le x_i, y_i \le 10^6)$。要求选择两条垂直于坐标轴的直线，使得划分出的四个区域中点的个数最多的区域中点的个数最少。
+    
+我们不能直接用一个 $10^6 \times 10^6$ 的二维数组来处理，所以我们需要将点的坐标离散化。具体地，只需要将横坐标和纵坐标分别进行离散化就行了：
+
+```cpp
+for (int i = 1; i <= n; ++i) {
+    read(x[i]), read(y[i]);
+    X[i] = x[i], Y[i] = y[i];
+}
+std::sort(X + 1, X + n + 1), std::sort(Y + 1, Y + n + 1);
+int n1 = std::unique(X + 1, X + n + 1) - X - 1, n2 = std::unique(Y + 1, Y + n + 1) - Y - 1;
+for (int i = 1; i <= n; ++i)    x[i] = std::lower_bound(X + 1, X + n1 + 1, x[i]) - X, y[i] = std::lower_bound(Y + 1, Y + n2 + 1, y[i]) - Y;
 ```
